@@ -32,8 +32,8 @@ import androidx.compose.ui.unit.sp
 
 /*
  * 4. Creamos un Estado "fullero" para la UI.
- * Lo hacemos con rememberSaveable sepa guardarlo
- * al rotar la pantalla.
+ * Lo podríamos hacer con rememberSaveable sepa guardarlo
+ * al rotar la pantalla pero la app peta si hacemos eso.
  */
 
 data class MonsterUiClass(
@@ -60,15 +60,18 @@ private fun createInitialState(): MonsterUiClass {
 }
 
 /*
- * 5. LA VISTA "SABELOTODO" (El Composable "Fullero")
+ * 5. LA VISTA OMNISCIENTE y OMNIPOTENTE (El Composable "Fullero")
  * Esta vista CONTIENE el estado y la LÓGICA DE NEGOCIO.
  */
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
 
 
-    // 1. EL ESTADO: Creamos el estado y lo recordamos (¡y lo guardamos al rotar!)
-    var uiState by rememberSaveable {
+    // 1. EL ESTADO: Creamos el estado y lo recordamos.
+    // Prueba si quieres a cambiarlo por rememberSaveable, petará casi seguro.
+    // El problema es evidente, además de la mantenibilidad, separación de responsabilidades, testeabilidad...
+    // al rotar el mostruo se "resetea".
+    var uiState by remember {
         mutableStateOf(createInitialState())
     }
 
@@ -155,11 +158,7 @@ fun MonsterCard(
                     .border(2.dp, Color.Gray)
             )
             HpBar(currentHp = currentHp, maxHp = maxHp)
-            Text(
-                text = "$currentHp / $maxHp",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.SemiBold
-            )
+
         }
     }
 }
@@ -178,6 +177,11 @@ fun HpBar(currentHp: Int, maxHp: Int, modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .height(16.dp)
             .padding(vertical = 4.dp)
+    )
+    Text(
+        text = "$currentHp / $maxHp",
+        fontSize = 20.sp,
+        fontWeight = FontWeight.SemiBold
     )
 }
 
