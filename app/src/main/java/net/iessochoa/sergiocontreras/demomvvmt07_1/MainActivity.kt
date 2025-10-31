@@ -28,4 +28,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-/* 1. Despejamos la clase MainActivity */
+/* 1. Despejamos la clase MainActivity
+   2. Creamos la data clase del modelo Monster
+   3. Creamos el repository de monsters, que nos dará datos fake
+*/
