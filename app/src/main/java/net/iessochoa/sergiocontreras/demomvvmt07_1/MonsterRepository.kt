@@ -2,6 +2,7 @@ package net.iessochoa.sergiocontreras.demomvvmt07_1
 
 // Esta clase simula una fuente de datos (como una BBDD o una API)
 // Es un stub/driver para proveer datos falsos (fake data).
+// Singleton pero en kotlin más fácil https://kotlinlang.org/docs/object-declarations.html#object-declarations-overview ;)
 object MonsterRepository {
 
     // Lista privada de monstruos (nuestra "base de datos" falsa)
@@ -13,10 +14,10 @@ object MonsterRepository {
             spriteId = R.drawable.goblin_archer
         ),
         Monster(
-            name = "Gigant Spider",
+            name = "Giant Spider",
             maxHp = 15,
             // Asegúrate de tener 'gigant_spider' en res/drawable
-            spriteId = R.drawable.gigant_spider
+            spriteId = R.drawable.giant_spider
         )
     )
 

@@ -30,5 +30,7 @@ class MainActivity : ComponentActivity() {
 
 /* 1. Despejamos la clase MainActivity
    2. Creamos la data clase del modelo Monster
-   3. Creamos el repository de monsters, que nos dará datos fake
+   3. Creamos el repository de monsters, que nos dará datos fake. Importamos sus assets también
+   4. Creamos la view, nuestros @Composables de toda la vida. Intentamos usar componentes separados.
+
 */
