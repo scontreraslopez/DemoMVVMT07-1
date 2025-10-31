@@ -32,5 +32,8 @@ class MainActivity : ComponentActivity() {
    2. Creamos la data clase del modelo Monster
    3. Creamos el repository de monsters, que nos dará datos fake. Importamos sus assets también
    4. Creamos la view, nuestros @Composables de toda la vida. Intentamos usar componentes separados.
-
+   5. La solución de ahora tiene una serie de limitaciones:
+     - Testeabilidad
+     - El monstruo se resetea al rotar
+     - No sigue las mejores prácticas de separación de responsabilidades
 */
