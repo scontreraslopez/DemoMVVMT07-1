@@ -36,7 +36,10 @@ object InventoryScreenDestination: NavigationDestination {
 }
 
 @Composable
-fun InventoryScreen(bodycount: Int) {
+fun InventoryScreen(
+    bodycount: Int,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,

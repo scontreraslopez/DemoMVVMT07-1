@@ -5,6 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.InventoryScreen
+import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.InventoryScreenDestination
 import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.MainScreen
 import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.MainScreenDestination
 
@@ -31,6 +33,12 @@ fun MonsterClickerNavHost(
                 modifier = modifier
 
             )
+        }
+        composable(route = InventoryScreenDestination.route) {
+            InventoryScreen(
+                //Necesito compartir el bodycount... debo llevarme el viewModel
+            )
+
         }
 
 
