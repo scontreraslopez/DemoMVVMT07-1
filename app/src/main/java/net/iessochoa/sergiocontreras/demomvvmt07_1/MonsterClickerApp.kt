@@ -32,12 +32,22 @@ import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.navigation.MonsterClickerN
 /**
  * Top level composable that represents screens for the application.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MonsterClickerApp(
     navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier
 ) {
-    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+    Scaffold(
+        topBar = {
+            MonsterClickerTopAppBar (
+                title = stringResource(R.string.app_name),
+                canNavigateBack = navController.previousBackStackEntry != null,
+                navigateUp = { navController.navigateUp() }
+            )
+        },
+        modifier = Modifier.fillMaxSize()
+    ) { innerPadding ->
         MonsterClickerNavHost(
             navController = navController,
             modifier = Modifier.padding(innerPadding)
@@ -45,30 +55,30 @@ fun MonsterClickerApp(
     }
 }
 
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun MonsterClickerTopAppBar(
-        title: String,
-        canNavigateBack: Boolean,
-        modifier: Modifier = Modifier,
-        scrollBehavior: TopAppBarScrollBehavior? = null,
-        navigateUp: () -> Unit = {}
-    ) {
-        CenterAlignedTopAppBar(
-            title = { Text(title) },
-            modifier = modifier,
-            scrollBehavior = scrollBehavior,
-            navigationIcon = {
-                if (canNavigateBack) {
-                    IconButton(onClick = navigateUp) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back_button)
-                        )
-                    }
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MonsterClickerTopAppBar(
+    title: String,
+    canNavigateBack: Boolean,
+    modifier: Modifier = Modifier,
+    scrollBehavior: TopAppBarScrollBehavior? = null,
+    navigateUp: () -> Unit = {}
+) {
+    CenterAlignedTopAppBar(
+        title = { Text(title) },
+        modifier = modifier,
+        scrollBehavior = scrollBehavior,
+        navigationIcon = {
+            if (canNavigateBack) {
+                IconButton(onClick = navigateUp) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.back_button)
+                    )
                 }
             }
-        )
-    }
+        }
+    )
+}
 
 
