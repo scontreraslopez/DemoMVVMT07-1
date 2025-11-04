@@ -2,6 +2,7 @@ package net.iessochoa.sergiocontreras.demomvvmt07_1.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -9,6 +10,7 @@ import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.InventoryScreen
 import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.InventoryScreenDestination
 import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.MainScreen
 import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.MainScreenDestination
+import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.MonsterViewModel
 
 /**
  * Project: DemoMVVMT07-1
@@ -23,6 +25,9 @@ fun MonsterClickerNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
 ) {
+
+    val monsterViewModel: MonsterViewModel = viewModel()
+
     NavHost(
         navController = navController,
         startDestination = MainScreenDestination.route,
@@ -30,13 +35,17 @@ fun MonsterClickerNavHost(
     ) {
         composable(route = MainScreenDestination.route) {
             MainScreen(
-                modifier = modifier
-
+                monsterViewModel = monsterViewModel,
+                modifier = modifier,
+                onNavigateToInventory = {
+                    navController.navigate(InventoryScreenDestination.route)
+                }
             )
         }
         composable(route = InventoryScreenDestination.route) {
             InventoryScreen(
-                //Necesito compartir el bodycount... debo llevarme el viewModel
+                monsterViewModel = monsterViewModel,
+                modifier = modifier
             )
 
         }

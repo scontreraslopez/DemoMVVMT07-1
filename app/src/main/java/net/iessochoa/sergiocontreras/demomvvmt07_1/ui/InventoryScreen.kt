@@ -46,7 +46,7 @@ fun InventoryScreen(
     val bodyCount = uiState.bodyCount
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -64,6 +64,8 @@ fun InventoryScreen(
     }
 }
 
+/*
+TODO FIX preview
 @Preview(showBackground = true)
 @Composable
 fun InventoryScreenPreviewWithGold() {
@@ -75,3 +77,4 @@ fun InventoryScreenPreviewWithGold() {
 fun InventoryScreenPreviewWithoutGold() {
     InventoryScreen(bodyCount = 0)
 }
+*/

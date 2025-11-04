@@ -66,7 +66,7 @@ fun MainScreen(
             bodyCount = bodyCount // Pasamos el contador
         )
 
-        InventoryButton(onClick = {})
+        InventoryButton(onClick = onNavigateToInventory)
 
     }
 }
@@ -150,8 +150,14 @@ fun StatsPanel(bodyCount: Int, modifier: Modifier = Modifier.Companion) {
     }
 }
 
+
+/*
+TODO fix preview
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
-    MainScreen()
+    MainScreen(
+
+    )
 }
+*/
