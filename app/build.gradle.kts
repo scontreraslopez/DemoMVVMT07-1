@@ -67,6 +67,6 @@ dependencies {
     // ViewModel utilities for Compose
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-    classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version")
+    implementation("androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version")
 
 }
