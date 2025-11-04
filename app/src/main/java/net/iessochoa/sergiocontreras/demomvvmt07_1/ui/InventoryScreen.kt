@@ -12,6 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import net.iessochoa.sergiocontreras.demomvvmt07_1.R
+import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.navigation.NavigationDestination
 import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.theme.Typography
 
 /**
@@ -28,6 +29,12 @@ import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.theme.Typography
  * tu inventario de momento solo mostrará gold: $bodycount
  * abajo una imagen de monedas de oro, si y solo si gold > 0
  */
+
+object MainScreenDestination: NavigationDestination {
+    override val route = "main"
+    override val titleRes = R.string.screen_inventory
+}
+
 @Composable
 fun InventoryScreen(bodycount: Int) {
     Column(

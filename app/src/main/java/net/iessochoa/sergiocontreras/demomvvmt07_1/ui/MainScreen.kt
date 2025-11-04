@@ -26,34 +26,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import net.iessochoa.sergiocontreras.demomvvmt07_1.data.MonsterRepository
+import net.iessochoa.sergiocontreras.demomvvmt07_1.R
+import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.navigation.NavigationDestination
 
-data class MonsterUiClass(
-    val name: String,
-    val maxHp: Int,
-    val currentHp: Int,
-    @DrawableRes val spriteId: Int
-)
-
-
-/**
- * Función helper para crear el estado inicial la primera vez.
- * Llama al Repositorio (una "fuente de datos").
- */
-private fun createInitialState(): MonsterUiClass {
-    // Pedimos el primer monstruo al repositorio
-    val monster = MonsterRepository.getNextMonster()
-    return MonsterUiClass(
-        name = monster.name,
-        maxHp = monster.maxHp,
-        currentHp = monster.maxHp,
-        spriteId = monster.spriteId)
+object MainScreenDestination: NavigationDestination {
+    override val route = "main"
+    override val titleRes = R.string.app_name
 }
-
-/*
- * 5. LA VISTA OMNISCIENTE y OMNIPOTENTE (El Composable "Fullero")
- * Esta vista CONTIENE el estado y la LÓGICA DE NEGOCIO.
- */
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
