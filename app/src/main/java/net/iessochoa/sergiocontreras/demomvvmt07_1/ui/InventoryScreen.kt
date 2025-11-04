@@ -30,7 +30,7 @@ import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.theme.Typography
  * abajo una imagen de monedas de oro, si y solo si gold > 0
  */
 
-object MainScreenDestination: NavigationDestination {
+object InventoryScreenDestination: NavigationDestination {
     override val route = "main"
     override val titleRes = R.string.screen_inventory
 }

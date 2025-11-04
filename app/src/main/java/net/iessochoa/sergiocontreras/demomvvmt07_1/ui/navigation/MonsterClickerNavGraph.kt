@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.MainScreen
 import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.MainScreenDestination
 
 /**
@@ -24,6 +26,13 @@ fun MonsterClickerNavHost(
         startDestination = MainScreenDestination.route,
         modifier = modifier
     ) {
+        composable(route = MainScreenDestination.route) {
+            MainScreen(
+                modifier = modifier
+
+            )
+        }
+
 
     }
 
