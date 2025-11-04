@@ -56,7 +56,7 @@ fun MonsterClickerApp(
     Scaffold(
         topBar = {
             MonsterClickerTopAppBar (
-                title = stringResource(R.string.app_name),
+                title = stringResource(currentScreen.title),
                 canNavigateBack = navController.previousBackStackEntry != null,
                 navigateUp = { navController.navigateUp() }
             )
