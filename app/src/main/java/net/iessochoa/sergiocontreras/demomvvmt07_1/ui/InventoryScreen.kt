@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import net.iessochoa.sergiocontreras.demomvvmt07_1.MonsterClickerApp
+import net.iessochoa.sergiocontreras.demomvvmt07_1.MonsterClickerScreen
 import net.iessochoa.sergiocontreras.demomvvmt07_1.R
 import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.navigation.NavigationDestination
 import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.theme.Typography
@@ -33,7 +35,7 @@ import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.theme.Typography
  */
 
 object InventoryScreenDestination: NavigationDestination {
-    override val route = "inventory"
+    override val route = MonsterClickerScreen.Inventory.name
     override val titleRes = R.string.screen_inventory
 }
 

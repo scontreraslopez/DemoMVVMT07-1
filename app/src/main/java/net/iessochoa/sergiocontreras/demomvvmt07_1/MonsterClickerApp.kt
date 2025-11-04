@@ -1,5 +1,6 @@
 package net.iessochoa.sergiocontreras.demomvvmt07_1
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -14,10 +15,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.MainScreen
 import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.navigation.MonsterClickerNavHost
 
 /**
@@ -29,6 +33,13 @@ import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.navigation.MonsterClickerN
  */
 
 
+// OJO POR EL .valueOf esto es case sensitive!
+enum class MonsterClickerScreen(@StringRes val title: Int) {
+    Main(title = R.string.app_name),
+    Inventory(title = R.string.screen_inventory),
+}
+
+
 /**
  * Top level composable that represents screens for the application.
  */
@@ -37,6 +48,11 @@ import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.navigation.MonsterClickerN
 fun MonsterClickerApp(
     navController: NavHostController = rememberNavController(),
 ) {
+
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentScreen = MonsterClickerScreen.valueOf(
+        backStackEntry?.destination?.route ?: MonsterClickerScreen.Main.name)
+
     Scaffold(
         topBar = {
             MonsterClickerTopAppBar (

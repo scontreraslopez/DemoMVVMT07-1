@@ -26,12 +26,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import net.iessochoa.sergiocontreras.demomvvmt07_1.MonsterClickerScreen
 import net.iessochoa.sergiocontreras.demomvvmt07_1.R
 import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.components.InventoryButton
 import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.navigation.NavigationDestination
 
 object MainScreenDestination: NavigationDestination {
-    override val route = "main"
+    override val route = MonsterClickerScreen.Main.name
     override val titleRes = R.string.app_name
 }
 @Composable
