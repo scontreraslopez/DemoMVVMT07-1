@@ -34,7 +34,10 @@ fun MonsterClickerApp(
     navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier
 ) {
-    MonsterClickerNavHost(navController = navController)
+    MonsterClickerNavHost(
+        navController = navController,
+        modifier = modifier
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

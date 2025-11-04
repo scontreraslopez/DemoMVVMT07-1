@@ -33,7 +33,7 @@ import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.theme.Typography
  */
 
 object InventoryScreenDestination: NavigationDestination {
-    override val route = "main"
+    override val route = "inventory"
     override val titleRes = R.string.screen_inventory
 }
 
