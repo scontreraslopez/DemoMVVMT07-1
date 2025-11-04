@@ -43,6 +43,8 @@ android {
 
 dependencies {
 
+    val nav_version = "2.9.5"
+
     // ViewModel
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -64,4 +66,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     // ViewModel utilities for Compose
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version")
+
 }
