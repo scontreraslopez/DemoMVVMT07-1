@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             DemoMVVMT071Theme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MainScreen(
+                    MonsterClickerApp(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

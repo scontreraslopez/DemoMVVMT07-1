@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">DemoMVVMT07-1</string>
     <string name="screen_inventory">Inventory</string>
+    <string name="back_button">Back</string>
 </resources>
