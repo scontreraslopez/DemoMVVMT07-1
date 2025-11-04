@@ -42,8 +42,6 @@ android {
 }
 
 dependencies {
-    val lifecycle_version = "2.9.4"
-    val arch_version = "2.2.0"
 
     // ViewModel
     implementation(libs.androidx.core.ktx)
@@ -63,7 +61,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycle_version}")
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     // ViewModel utilities for Compose
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${lifecycle_version}")
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 }
