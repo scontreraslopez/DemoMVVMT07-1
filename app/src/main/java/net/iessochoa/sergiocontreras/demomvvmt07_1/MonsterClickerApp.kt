@@ -1,6 +1,8 @@
 package net.iessochoa.sergiocontreras.demomvvmt07_1
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 
 /**
  * Project: DemoMVVMT07-1
@@ -16,5 +18,5 @@ import androidx.compose.runtime.Composable
  */
 @Composable
 fun MonsterClickerApp(navController: NavHostController = rememberNavController()) {
-    InventoryNavHost(navController = navController)
+    //TODO -> InventoryNavHost(navController = navController)
 }
