@@ -18,11 +18,13 @@ maxHp = uiState.maxHp,
 spriteId = uiState.spriteId,
  */
 
+val firstMonster = MonsterRepository.getNextMonster()
+
 data class MonsterUiState (
-    val name: String = MonsterRepository.getNextMonster().name,
-    val currentHp: Int = MonsterRepository.getNextMonster().maxHp,  //Al principio current = max
-    val maxHp: Int = MonsterRepository.getNextMonster().maxHp,
-    @DrawableRes val spriteId: Int = MonsterRepository.getNextMonster().spriteId,
+    val name: String = firstMonster.name,
+    val currentHp: Int = firstMonster.maxHp,  //Al principio current = max
+    val maxHp: Int = firstMonster.maxHp,
+    @DrawableRes val spriteId: Int = firstMonster.spriteId,
 
     //Esto quizá en el futuro refactorizable fuera
     val bodyCount: Int = 0
