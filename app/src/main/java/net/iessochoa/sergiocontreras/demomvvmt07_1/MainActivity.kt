@@ -17,11 +17,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             DemoMVVMT071Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MonsterClickerApp(
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                    MonsterClickerApp()
             }
         }
     }
