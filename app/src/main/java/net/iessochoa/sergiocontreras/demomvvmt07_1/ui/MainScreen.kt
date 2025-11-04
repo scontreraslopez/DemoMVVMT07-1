@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import net.iessochoa.sergiocontreras.demomvvmt07_1.R
+import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.components.InventoryButton
 import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.navigation.NavigationDestination
 
 object MainScreenDestination: NavigationDestination {
@@ -63,6 +64,9 @@ fun MainScreen(
         StatsPanel(
             bodyCount = bodyCount // Pasamos el contador
         )
+
+        InventoryButton(onClick = {})
+
     }
 }
 

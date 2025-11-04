@@ -32,7 +32,7 @@ fun InventoryButton(
 ) {
     Column(
         modifier = modifier
-            .size(80.dp)
+            .size(100.dp)
             .border(1.dp, MaterialTheme.colorScheme.primary)
             .clickable { onClick() } //
             .padding(8.dp),
@@ -42,12 +42,12 @@ fun InventoryButton(
         Image(
             painter = painterResource(R.drawable.chest),
             contentDescription = "Inventory",
-            modifier = Modifier.weight(0.75f)
+            modifier = Modifier.weight(0.7f)
 
         )
         Text(
             text = "Inventory",
-            modifier = Modifier.weight(0.25f)
+            modifier = Modifier.weight(0.3f)
         )
     }
 }
