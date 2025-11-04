@@ -36,7 +36,7 @@ fun MonsterClickerNavHost(
         composable(route = MainScreenDestination.route) {
             MainScreen(
                 monsterViewModel = monsterViewModel,
-                modifier = modifier,
+                modifier = Modifier,
                 onNavigateToInventory = {
                     navController.navigate(InventoryScreenDestination.route)
                 }
@@ -45,7 +45,7 @@ fun MonsterClickerNavHost(
         composable(route = InventoryScreenDestination.route) {
             InventoryScreen(
                 monsterViewModel = monsterViewModel,
-                modifier = modifier
+                modifier = Modifier
             )
 
         }

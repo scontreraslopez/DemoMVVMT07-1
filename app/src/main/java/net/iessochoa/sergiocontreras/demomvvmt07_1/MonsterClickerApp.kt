@@ -36,7 +36,6 @@ import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.navigation.MonsterClickerN
 @Composable
 fun MonsterClickerApp(
     navController: NavHostController = rememberNavController(),
-    modifier: Modifier = Modifier
 ) {
     Scaffold(
         topBar = {
@@ -46,7 +45,6 @@ fun MonsterClickerApp(
                 navigateUp = { navController.navigateUp() }
             )
         },
-        modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
         MonsterClickerNavHost(
             navController = navController,
