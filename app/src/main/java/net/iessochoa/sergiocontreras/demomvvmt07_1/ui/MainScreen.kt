@@ -15,11 +15,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import net.iessochoa.sergiocontreras.demomvvmt07_1.data.MonsterRepository
 
 data class MonsterUiClass(
@@ -57,42 +55,18 @@ private fun createInitialState(): MonsterUiClass {
  * Esta vista CONTIENE el estado y la LÓGICA DE NEGOCIO.
  */
 @Composable
-fun MainScreen(modifier: Modifier = Modifier.Companion) {
+fun MainScreen(
+    modifier: Modifier = Modifier,
+    monsterViewModel: MonsterViewModel = viewModel()  //Recuerda importar lifecycle dependencies en gradle o no tirará
+){
 
 
-    // 1. EL ESTADO: Creamos el estado y lo recordamos.
-    // Prueba si quieres a cambiarlo por rememberSaveable, petará casi seguro.
-    // El problema es evidente, además de la mantenibilidad, separación de responsabilidades, testeabilidad...
-    // al rotar el mostruo se "resetea".
-    var uiState by remember {
-        mutableStateOf(createInitialState())
-    }
+    // 1. EL ESTADO: Ahora fetén con el viewModel
+    val uiState by monsterViewModel.uiState.collectAsState() // así esta casi listo
+    val bodyCount = uiState.bodyCount // así tengo que toquitear menos
+    val onAttack = { monsterViewModel.onAttack() } // Pasamos la lógica como una lambda
 
-    var bodyCount by rememberSaveable { mutableStateOf(0) } // Int Lo iniciamos a 0.
-
-    // 2. LA LÓGICA DE NEGOCIO: ¡La definimos DENTRO de la Vista! (MAL)
-    fun onAttack() {
-        // Lógica de daño
-        val damage = (1..3).random()
-        val newHp = (uiState.currentHp - damage).coerceAtLeast(0) //coerceAtLeast es para forzar 0+
-
-        if (newHp == 0) {
-            // Lógica de "monstruo derrotado"
-            val newMonster = MonsterRepository.getNextMonster()
-            uiState = uiState.copy(
-                name = newMonster.name,
-                maxHp = newMonster.maxHp,
-                currentHp = newMonster.maxHp,
-                spriteId = newMonster.spriteId,
-            )
-            bodyCount++ // Actualizamos el contador
-        } else {
-            // Lógica de "sigue vivo"
-            uiState = uiState.copy(currentHp = newHp)
-        }
-    }
-
-    // 3. LA UI: Pasamos el estado y la lógica a los componentes "tontos"
+    // 2. LA UI: Pasamos el estado y la lógica a los componentes "tontos"
     Column(
         modifier = modifier.padding(16.dp),
         horizontalAlignment = Alignment.Companion.CenterHorizontally,
@@ -104,7 +78,7 @@ fun MainScreen(modifier: Modifier = Modifier.Companion) {
             currentHp = uiState.currentHp,
             maxHp = uiState.maxHp,
             spriteId = uiState.spriteId,
-            onAttack = { onAttack() } // Pasamos el evento (la lógica)
+            onAttack =  onAttack // Pasamos el evento (la lógica)
         )
 
         StatsPanel(
