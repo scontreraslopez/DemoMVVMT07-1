@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -37,20 +39,23 @@ object InventoryScreenDestination: NavigationDestination {
 
 @Composable
 fun InventoryScreen(
-    bodycount: Int,
+    monsterViewModel: MonsterViewModel,
     modifier: Modifier = Modifier,
 ) {
+    val uiState by monsterViewModel.uiState.collectAsState() // así esta casi listo
+    val bodyCount = uiState.bodyCount
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "gold: $bodycount",
+            text = "gold: $bodyCount",
             style = Typography.headlineLarge,
             fontWeight = FontWeight.Bold
         )
-        if (bodycount > 0) {
+        if (bodyCount > 0) {
             Image(
                 painter = painterResource(R.drawable.gold),
                 contentDescription = "Gold"
@@ -62,11 +67,11 @@ fun InventoryScreen(
 @Preview(showBackground = true)
 @Composable
 fun InventoryScreenPreviewWithGold() {
-    InventoryScreen(bodycount = 100)
+    InventoryScreen(bodyCount = 100)
 }
 
 @Preview(showBackground = true)
 @Composable
 fun InventoryScreenPreviewWithoutGold() {
-    InventoryScreen(bodycount = 0)
+    InventoryScreen(bodyCount = 0)
 }

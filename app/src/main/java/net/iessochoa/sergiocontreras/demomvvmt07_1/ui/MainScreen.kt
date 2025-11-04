@@ -36,8 +36,9 @@ object MainScreenDestination: NavigationDestination {
 }
 @Composable
 fun MainScreen(
-    modifier: Modifier = Modifier,
-    monsterViewModel: MonsterViewModel = viewModel()  //Recuerda importar lifecycle dependencies en gradle o no tirará
+    monsterViewModel: MonsterViewModel = viewModel(),  //Recuerda importar lifecycle dependencies en gradle o no tirará
+    onNavigateToInventory: () -> Unit, //Lambda navegacion
+    modifier: Modifier = Modifier
 ){
 
 
