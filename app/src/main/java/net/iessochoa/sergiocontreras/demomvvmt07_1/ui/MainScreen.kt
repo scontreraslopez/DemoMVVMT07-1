@@ -1,5 +1,4 @@
-package net.iessochoa.sergiocontreras.demomvvmt07_1
-
+package net.iessochoa.sergiocontreras.demomvvmt07_1.ui
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -29,12 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
-/*
- * 4. Creamos un Estado "fullero" para la UI.
- * Lo podríamos hacer con rememberSaveable sepa guardarlo
- * al rotar la pantalla pero la app peta si hacemos eso.
- */
+import net.iessochoa.sergiocontreras.demomvvmt07_1.data.MonsterRepository
 
 data class MonsterUiClass(
     val name: String,
@@ -42,7 +36,6 @@ data class MonsterUiClass(
     val currentHp: Int,
     @DrawableRes val spriteId: Int
 )
-
 
 
 /**
@@ -64,7 +57,7 @@ private fun createInitialState(): MonsterUiClass {
  * Esta vista CONTIENE el estado y la LÓGICA DE NEGOCIO.
  */
 @Composable
-fun MainScreen(modifier: Modifier = Modifier) {
+fun MainScreen(modifier: Modifier = Modifier.Companion) {
 
 
     // 1. EL ESTADO: Creamos el estado y lo recordamos.
@@ -102,7 +95,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
     // 3. LA UI: Pasamos el estado y la lógica a los componentes "tontos"
     Column(
         modifier = modifier.padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.Companion.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         // Pasamos los datos del estado uno por uno
@@ -130,7 +123,7 @@ fun MonsterCard(
     maxHp: Int,
     @DrawableRes spriteId: Int,
     onAttack: () -> Unit, // Recibe la lógica como una lambda
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier.Companion
 ) {
     Card(
         modifier = modifier
@@ -139,23 +132,23 @@ fun MonsterCard(
             .clickable(onClick = onAttack, enabled = currentHp > 0)
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
+            horizontalAlignment = Alignment.Companion.CenterHorizontally,
+            modifier = Modifier.Companion
                 .padding(16.dp)
                 .fillMaxWidth()
         ) {
             Text(
                 text = name,
                 fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Companion.Bold
             )
             Image(
                 painter = painterResource(id = spriteId),
                 contentDescription = name,
-                modifier = Modifier
+                modifier = Modifier.Companion
                     .size(150.dp)
                     .padding(8.dp)
-                    .border(2.dp, Color.Gray)
+                    .border(2.dp, Color.Companion.Gray)
             )
             HpBar(currentHp = currentHp, maxHp = maxHp)
 
@@ -167,7 +160,7 @@ fun MonsterCard(
  * Solo muestra la barra de vida.
  */
 @Composable
-fun HpBar(currentHp: Int, maxHp: Int, modifier: Modifier = Modifier) {
+fun HpBar(currentHp: Int, maxHp: Int, modifier: Modifier = Modifier.Companion) {
     // Calculamos el progreso (de 0.0f a 1.0f)
     val progress = (currentHp.toFloat() / maxHp.toFloat()).coerceIn(0f, 1f)
 
@@ -181,7 +174,7 @@ fun HpBar(currentHp: Int, maxHp: Int, modifier: Modifier = Modifier) {
     Text(
         text = "$currentHp / $maxHp",
         fontSize = 20.sp,
-        fontWeight = FontWeight.SemiBold
+        fontWeight = FontWeight.Companion.SemiBold
     )
 }
 
@@ -189,7 +182,7 @@ fun HpBar(currentHp: Int, maxHp: Int, modifier: Modifier = Modifier) {
  * Solo muestra las estadísticas.
  */
 @Composable
-fun StatsPanel(bodyCount: Int, modifier: Modifier = Modifier) {
+fun StatsPanel(bodyCount: Int, modifier: Modifier = Modifier.Companion) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceAround

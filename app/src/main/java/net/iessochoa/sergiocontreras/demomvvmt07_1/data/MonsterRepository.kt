@@ -1,4 +1,7 @@
-package net.iessochoa.sergiocontreras.demomvvmt07_1
+package net.iessochoa.sergiocontreras.demomvvmt07_1.data
+
+import net.iessochoa.sergiocontreras.demomvvmt07_1.model.Monster
+import net.iessochoa.sergiocontreras.demomvvmt07_1.R
 
 // Esta clase simula una fuente de datos (como una BBDD o una API)
 // Es un stub/driver para proveer datos falsos (fake data).

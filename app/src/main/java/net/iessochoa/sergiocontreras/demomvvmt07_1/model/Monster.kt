@@ -1,4 +1,4 @@
-package net.iessochoa.sergiocontreras.demomvvmt07_1
+package net.iessochoa.sergiocontreras.demomvvmt07_1.model
 
 import androidx.annotation.DrawableRes
 
