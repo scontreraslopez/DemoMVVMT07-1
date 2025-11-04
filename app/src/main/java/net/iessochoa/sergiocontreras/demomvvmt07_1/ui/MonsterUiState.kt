@@ -22,5 +22,8 @@ data class MonsterUiState (
     val name: String = MonsterRepository.getNextMonster().name,
     val currentHp: Int = MonsterRepository.getNextMonster().maxHp,  //Al principio current = max
     val maxHp: Int = MonsterRepository.getNextMonster().maxHp,
-    @DrawableRes val spriteId: Int = MonsterRepository.getNextMonster().spriteId
+    @DrawableRes val spriteId: Int = MonsterRepository.getNextMonster().spriteId,
+
+    //Esto quizá en el futuro refactorizable fuera
+    val bodyCount: Int = 0
 )
