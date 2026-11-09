@@ -1,4 +1,4 @@
-package net.iessochoa.sergiocontreras.demomvvmt07_1
+package net.iessochoa.sergiocontreras.demomvvmt07_1.ui.screen
 
 
 import androidx.annotation.DrawableRes
@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import net.iessochoa.sergiocontreras.demomvvmt07_1.data.MonsterRepository
 
 /*
  * 4. Creamos un Estado "fullero" para la UI.
