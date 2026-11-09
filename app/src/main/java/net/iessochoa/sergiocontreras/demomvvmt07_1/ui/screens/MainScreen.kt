@@ -1,35 +1,24 @@
-package net.iessochoa.sergiocontreras.demomvvmt07_1.ui.screen
+package net.iessochoa.sergiocontreras.demomvvmt07_1.ui.screens
 
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Card
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import net.iessochoa.sergiocontreras.demomvvmt07_1.data.MonsterRepository
+import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.components.MonsterCard
+import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.components.StatsPanel
 
 /*
  * 4. Creamos un Estado "fullero" para la UI.
@@ -76,7 +65,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
         mutableStateOf(createInitialState())
     }
 
-    var bodyCount by rememberSaveable { mutableStateOf(0) } // Int Lo iniciamos a 0.
+    var bodyCount by rememberSaveable { mutableIntStateOf(0) } // Int Lo iniciamos a 0.
 
     // 2. LA LÓGICA DE NEGOCIO: ¡La definimos DENTRO de la Vista! (MAL)
     fun onAttack() {
@@ -121,84 +110,6 @@ fun MainScreen(modifier: Modifier = Modifier) {
     }
 }
 
-/* * Componente de UI (Vista) "Tonto"
- * Solo recibe datos y notifica un clic (lambda).
- */
-@Composable
-fun MonsterCard(
-    name: String,
-    currentHp: Int,
-    maxHp: Int,
-    @DrawableRes spriteId: Int,
-    onAttack: () -> Unit, // Recibe la lógica como una lambda
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            // Hacemos que la tarjeta sea clicable
-            .clickable(onClick = onAttack, enabled = currentHp > 0)
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth()
-        ) {
-            Text(
-                text = name,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Image(
-                painter = painterResource(id = spriteId),
-                contentDescription = name,
-                modifier = Modifier
-                    .size(150.dp)
-                    .padding(8.dp)
-                    .border(2.dp, Color.Gray)
-            )
-            HpBar(currentHp = currentHp, maxHp = maxHp)
-
-        }
-    }
-}
-
-/* * Componente de UI (Vista) "Tonto"
- * Solo muestra la barra de vida.
- */
-@Composable
-fun HpBar(currentHp: Int, maxHp: Int, modifier: Modifier = Modifier) {
-    // Calculamos el progreso (de 0.0f a 1.0f)
-    val progress = (currentHp.toFloat() / maxHp.toFloat()).coerceIn(0f, 1f)
-
-    LinearProgressIndicator(
-        progress = { progress },
-        modifier = modifier
-            .fillMaxWidth()
-            .height(16.dp)
-            .padding(vertical = 4.dp)
-    )
-    Text(
-        text = "$currentHp / $maxHp",
-        fontSize = 20.sp,
-        fontWeight = FontWeight.SemiBold
-    )
-}
-
-/* * Componente de UI (Vista) "Tonto"
- * Solo muestra las estadísticas.
- */
-@Composable
-fun StatsPanel(bodyCount: Int, modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceAround
-    ) {
-        Text(text = "Damage: 1-3", fontSize = 16.sp)
-        Text(text = "Body Count: $bodyCount", fontSize = 16.sp)
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
