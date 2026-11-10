@@ -21,7 +21,8 @@ fun MonsterFighterApp() {
 
         MainScreen(
             modifier = Modifier.padding(innerPadding),
-            uiState = uiState
+            uiState = uiState,
+            onAttack = { viewModel.onAttack() }
         )
     }
 }

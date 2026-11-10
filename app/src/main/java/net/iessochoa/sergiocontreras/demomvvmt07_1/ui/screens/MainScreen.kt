@@ -38,7 +38,15 @@ import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.theme.DemoMVVMT071Theme
         a 10 y lo he dejado con un TO-DO
 
     En este punto ya puedo probar la aplicación y no ataca pero se tiene que ver
+
+    Paso 6: Modificamos la firma de la pantalla para que reciba la lógica del viewModel y la
+    asociamos al evento de click. Esto lo cascadeamos desde el entryPoint de la apliación, donde
+    tenemos instanciado el viewModel, es decir en nuestro caso MonsterFighterApp()
+
  */
+
+
+
 
 /*
  * 5. LA VISTA OMNISCIENTE y OMNIPOTENTE (El Composable "Fullero")
@@ -47,37 +55,15 @@ import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.theme.DemoMVVMT071Theme
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    uiState: MainScreenUiState
+    uiState: MainScreenUiState,
+    onAttack: () -> Unit
 ) {
 
     val currentMonster = uiState.currentMonster
     val currentMonsterHp = uiState.currentMonsterHP
     val bodyCount = uiState.bodyCount
 
-// 2. LA LÓGICA DE NEGOCIO: ¡La definimos DENTRO de la Vista! (MAL)
-    fun onAttack() {
-        /*
-        // Lógica de daño
-        val damage = (1..3).random()
-        val newHp = (uiState.currentHp - damage).coerceAtLeast(0) //coerceAtLeast es para forzar 0+
 
-        if (newHp == 0) {
-            // Lógica de "monstruo derrotado"
-            val newMonster = MonsterRepository.getNextMonster()
-            uiState = uiState.copy(
-                name = newMonster.name,
-                maxHp = newMonster.maxHp,
-                currentHp = newMonster.maxHp,
-                spriteId = newMonster.spriteId,
-            )
-            bodyCount++ // Actualizamos el contador
-        } else {
-            // Lógica de "sigue vivo"
-            uiState = uiState.copy(currentHp = newHp)
-        }
-        */
-
-    }
 
     // 3. LA UI: Pasamos el estado y la lógica a los componentes "tontos"
     Column(
@@ -91,7 +77,7 @@ fun MainScreen(
             currentHp = currentMonsterHp,
             maxHp = currentMonster.maxHp,
             spriteId = currentMonster.spriteId,
-            onAttack = { onAttack() } // Pasamos el evento (la lógica)
+            onAttack =  onAttack  // Pasamos el evento (la lógica)
         )
 
         StatsPanel(
@@ -115,7 +101,8 @@ fun MainScreenPreview() {
 
     DemoMVVMT071Theme {
         MainScreen(
-            uiState = uiState
+            uiState = uiState,
+            onAttack = { }
         )
     }
 }
