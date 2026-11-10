@@ -35,7 +35,7 @@ import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.theme.DemoMVVMT071Theme
         - el onAttack lo he comentado entero, ya lo migraré a viewModel. O sea
         temporalmente he "roto" la aplicación ya no hace nada
         - el currentHp se me había olvidado meterlo en mi uiState. Así que lo he fijado
-        a 10 y lo he dejado con un TODO
+        a 10 y lo he dejado con un TO-DO
 
     En este punto ya puedo probar la aplicación y no ataca pero se tiene que ver
  */
@@ -51,6 +51,7 @@ fun MainScreen(
 ) {
 
     val currentMonster = uiState.currentMonster
+    val currentMonsterHp = uiState.currentMonsterHP
     val bodyCount = uiState.bodyCount
 
 // 2. LA LÓGICA DE NEGOCIO: ¡La definimos DENTRO de la Vista! (MAL)
@@ -87,7 +88,7 @@ fun MainScreen(
         // Pasamos los datos del estado uno por uno
         MonsterCard(
             name = currentMonster.name,
-            currentHp = 10, //TODO currentMonster.currentHp,
+            currentHp = currentMonsterHp,
             maxHp = currentMonster.maxHp,
             spriteId = currentMonster.spriteId,
             onAttack = { onAttack() } // Pasamos el evento (la lógica)
@@ -104,9 +105,11 @@ fun MainScreen(
 @Composable
 fun MainScreenPreview() {
 
+    val initialMonster = MonsterRepository.getNextMonster()
     /* Genero un estado inicial para el preview */
     val uiState = MainScreenUiState(
-        currentMonster = MonsterRepository.getNextMonster(),
+        currentMonster = initialMonster,
+        currentMonsterHP = initialMonster.maxHp / 3,
         bodyCount = 0
     )
 

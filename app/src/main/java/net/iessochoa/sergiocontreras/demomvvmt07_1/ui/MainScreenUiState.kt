@@ -16,7 +16,14 @@ A tal efecto creamos una data class que va a servir de almacén del estado.
 Es posible darle un valor por defecto.
 */
 
+/*
+   Paso 4: Este paso no sucede siempre pero a veces pasa que se te olvida algo y tienes que volver,
+   En este caso hemos detectado que en el estado no vale solo con el monstruo, sino que hace falta también
+   guardar su salud.
+ */
+
 data class MainScreenUiState(
     val currentMonster: Monster,
+    val currentMonsterHP: Int,
     val bodyCount: Int
 )
