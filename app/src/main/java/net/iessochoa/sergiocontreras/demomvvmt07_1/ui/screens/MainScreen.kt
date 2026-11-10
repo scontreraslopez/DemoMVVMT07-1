@@ -1,74 +1,61 @@
 package net.iessochoa.sergiocontreras.demomvvmt07_1.ui.screens
 
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.iessochoa.sergiocontreras.demomvvmt07_1.data.MonsterRepository
+import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.MainScreenUiState
 import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.components.MonsterCard
 import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.components.StatsPanel
+import net.iessochoa.sergiocontreras.demomvvmt07_1.ui.theme.DemoMVVMT071Theme
+
 
 /*
- * 4. Creamos un Estado "fullero" para la UI.
- * Lo podríamos hacer con rememberSaveable sepa guardarlo
- * al rotar la pantalla pero la app peta si hacemos eso.
+    Paso 3: Quito de la vista el estado.
+    Modifico la firma de la pantalla para recibir el estado.
+
+    Puedo pasar el uiState como un conjunto, o podría separarlo más.
+    A priori es más o menos lo mismo mientras lo gestionemos bien.
+    En el codelab le enchufa a la vista el viewModel entero, eso tiene un problema
+    y es que fastidia el preview... a mí no me gusta.
+
+    El viewModel lo cogemos en la clase App() o MainActivity() donde tengamos nuestro
+    entry point a la aplicación.
+
+    La parte de la lógica la he comentado por que la voy a hacer en un paso 4 para que quede
+    un poco más claro.
+
+    Cuestiones que he tenido que ñapear:
+        - el onAttack lo he comentado entero, ya lo migraré a viewModel. O sea
+        temporalmente he "roto" la aplicación ya no hace nada
+        - el currentHp se me había olvidado meterlo en mi uiState. Así que lo he fijado
+        a 10 y lo he dejado con un TODO
+
+    En este punto ya puedo probar la aplicación y no ataca pero se tiene que ver
  */
-
-data class MonsterUiClass(
-    val name: String,
-    val maxHp: Int,
-    val currentHp: Int,
-    @DrawableRes val spriteId: Int
-)
-
-
-
-/**
- * Función helper para crear el estado inicial la primera vez.
- * Llama al Repositorio (una "fuente de datos").
- */
-private fun createInitialState(): MonsterUiClass {
-    // Pedimos el primer monstruo al repositorio
-    val monster = MonsterRepository.getNextMonster()
-    return MonsterUiClass(
-        name = monster.name,
-        maxHp = monster.maxHp,
-        currentHp = monster.maxHp,
-        spriteId = monster.spriteId)
-}
 
 /*
  * 5. LA VISTA OMNISCIENTE y OMNIPOTENTE (El Composable "Fullero")
  * Esta vista CONTIENE el estado y la LÓGICA DE NEGOCIO.
  */
 @Composable
-fun MainScreen(modifier: Modifier = Modifier) {
+fun MainScreen(
+    modifier: Modifier = Modifier,
+    uiState: MainScreenUiState
+) {
 
+    val currentMonster = uiState.currentMonster
+    val bodyCount = uiState.bodyCount
 
-    // 1. EL ESTADO: Creamos el estado y lo recordamos.
-    // Prueba si quieres a cambiarlo por rememberSaveable, petará casi seguro.
-    // El problema es evidente, además de la mantenibilidad, separación de responsabilidades, testeabilidad...
-    // al rotar el mostruo se "resetea".
-    var uiState by remember {
-        mutableStateOf(createInitialState())
-    }
-
-    var bodyCount by rememberSaveable { mutableIntStateOf(0) } // Int Lo iniciamos a 0.
-
-    // 2. LA LÓGICA DE NEGOCIO: ¡La definimos DENTRO de la Vista! (MAL)
+// 2. LA LÓGICA DE NEGOCIO: ¡La definimos DENTRO de la Vista! (MAL)
     fun onAttack() {
+        /*
         // Lógica de daño
         val damage = (1..3).random()
         val newHp = (uiState.currentHp - damage).coerceAtLeast(0) //coerceAtLeast es para forzar 0+
@@ -87,6 +74,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
             // Lógica de "sigue vivo"
             uiState = uiState.copy(currentHp = newHp)
         }
+        */
+
     }
 
     // 3. LA UI: Pasamos el estado y la lógica a los componentes "tontos"
@@ -97,10 +86,10 @@ fun MainScreen(modifier: Modifier = Modifier) {
     ) {
         // Pasamos los datos del estado uno por uno
         MonsterCard(
-            name = uiState.name,
-            currentHp = uiState.currentHp,
-            maxHp = uiState.maxHp,
-            spriteId = uiState.spriteId,
+            name = currentMonster.name,
+            currentHp = 10, //TODO currentMonster.currentHp,
+            maxHp = currentMonster.maxHp,
+            spriteId = currentMonster.spriteId,
             onAttack = { onAttack() } // Pasamos el evento (la lógica)
         )
 
@@ -114,5 +103,16 @@ fun MainScreen(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
-    MainScreen()
+
+    /* Genero un estado inicial para el preview */
+    val uiState = MainScreenUiState(
+        currentMonster = MonsterRepository.getNextMonster(),
+        bodyCount = 0
+    )
+
+    DemoMVVMT071Theme {
+        MainScreen(
+            uiState = uiState
+        )
+    }
 }
