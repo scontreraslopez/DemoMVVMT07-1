@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import net.iessochoa.sergiocontreras.demomvvmt07_1.data.MonsterRepository
 
 /*
@@ -18,20 +19,56 @@ import net.iessochoa.sergiocontreras.demomvvmt07_1.data.MonsterRepository
     así que acoplamos el repositorio dentro del cuerpo del ViewModel para salir del paso.
 
 
+    Parte del paso 4: Como nos ha tocado modificar la clase uiState
+    pues nos toca apañar también el estado inicial del viewModel
+
+    Paso 5: Movemos la lógica (o la implementamos).
+    El patron es el mismo siempre, el _uiState (el privado) con un .update { }
+    calculamos el nuevo estado y lo planchamos sobreescribiendo currenteState con el .copy()
 
  */
 
 class MainScreenViewModel: ViewModel() {
 
     private val repository = MonsterRepository
+    private val initialMonster = repository.getNextMonster()
 
     private val _uiState = MutableStateFlow(
         MainScreenUiState(
-            currentMonster = repository.getNextMonster(),
+            currentMonster = initialMonster,
+            currentMonsterHP = initialMonster.maxHp, // Lo hacemos
             bodyCount = 0
         )
     )
     val uiState: StateFlow<MainScreenUiState> = _uiState.asStateFlow()
+
+    // Lógica de daño
+
+    fun onAttack() {
+
+        val damage = (1..3).random()
+
+        _uiState.update { currentState ->
+
+            val newHp =
+                (currentState.currentMonsterHP - damage).coerceAtLeast(0) //coerceAtLeast es para forzar 0+
+
+            if (newHp == 0) {
+                // Lógica de "monstruo derrotado"
+                val newMonster = MonsterRepository.getNextMonster()
+
+                currentState.copy(
+                    currentMonster = newMonster,
+                    currentMonsterHP = newMonster.maxHp,
+                    bodyCount = currentState.bodyCount + 1 // Actualizamos el contador
+                )
+            } else {
+                currentState.copy(
+                    currentMonsterHP = newHp
+                )
+            }
+        }
+    }
 
 
 }
