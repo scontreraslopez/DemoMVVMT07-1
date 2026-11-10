@@ -7,34 +7,42 @@ La app es deliberadamente **muy sencilla**: aparece un monstruo, lo tocas, le qu
 Y es a propósito: el monstruo es solo una **excusa**. Lo que interesa es tener otra implementación, pequeña y fácil de seguir, de dos cosas que se repiten en todo el tema:
 
 1. **Arquitectura MVVM** con `ViewModel` + `StateFlow` + un `UiState` inmutable.
-2. **Navegación en Compose** con `NavHost`, rutas sin *magic strings* y un `ViewModel` compartido entre pantallas.
+2. **Navegación en Compose** *(todavía no está en `main`; de momento el proyecto cubre la parte de MVVM)*.
 
 Como el dominio no tiene ninguna complejidad, toda la atención queda en la arquitectura.
 
 ---
 
-## Cómo está organizado: una rama por paso
+## Cómo está organizado
 
-> ⚠️ **TODO:** la estructura de ramas está pendiente de actualizar. Puede que lo que pone esta sección y lo que hay de verdad en cada rama no coincida del todo.
-
-El proyecto se recorre por ramas. Cada una parte de la anterior y arregla un problema de la versión previa.
-
-| Rama | Qué contiene | Qué se aprende |
-|---|---|---|
-| `starter` | Esqueleto: modelo, repositorio *fake* y recursos (sprites). | Punto de partida para el alumnado. |
-| `main` | La versión "fullera": funciona, pero el estado y la lógica de negocio están **dentro del Composable**. La UI ya está troceada en componentes (`MonsterCard`, `HpBar`, `StatsPanel`). | Ver por qué esto **no** escala. |
-| `develop-mvvm` | Refactor a MVVM: aparecen `MonsterUiState` y `MonsterViewModel`. | Separar estado, lógica y vista. |
-| `develop-nav2` | Se añade una segunda pantalla (inventario) y la navegación entre ambas. | `NavHost`, destinos y compartir `ViewModel`. |
-
-> `main-original` guarda la primera versión de la vista, antes de reorganizar paquetes. Las ramas locales `develop` y `develop2` equivalen a `develop-mvvm` y `develop-nav2`.
+| Dónde | Para qué |
+|---|---|
+| Rama `starter` | **Tu rama de trabajo.** La app funciona, pero el estado y la lógica están dentro del Composable. Aquí es donde tienes que intentar hacer tú el refactor a MVVM. |
+| Tag `starting-point` | Marca el punto de partida de `starter`. Si te lías y quieres volver a empezar desde cero, vuelve aquí. |
+| Rama `main` | **Mi solución propuesta**, explicada **commit a commit** (`Paso 0`, `Paso 1`…). Cada commit es un paso pequeño, y el código lleva comentarios `Paso N` explicando qué se hace y por qué. |
 
 ```bash
-git switch develop-mvvm   # por ejemplo
+# Empezar a trabajar
+git switch starter
+
+# Volver al punto de partida si algo se rompe (crea una rama nueva desde el tag)
+git switch -c mi-intento starting-point
+
+# Ver la solución paso a paso
+git log --oneline starting-point..main
+git show <hash-del-paso>          # qué cambia en ese paso
+git switch --detach <hash-del-paso>  # dejar el proyecto tal y como estaba en ese paso
 ```
+
+> 💡 La forma recomendada es: intenta tú cada paso en `starter` y, si te atascas, mira **solo el commit de ese paso** en `main`, no la solución entera.
+
+### ⚠️ Ramas antiguas: no las uses
+
+`develop-mvvm`, `develop-nav2` y `main-original` son de un curso anterior. Están hechas con versiones viejas de todo (AGP 8.13, Kotlin 2.0, Compose BOM 2024.09, `targetSdk 36`, Navigation 2), así que con el Android Studio actual **lo normal es que no compilen o den guerra**. Se quedan solo como archivo histórico. Trabaja siempre a partir de `starter` / `main`.
 
 ---
 
-## Paso 1 — La versión "fullera" (`main`)
+## El punto de partida (`starter`)
 
 En `ui/screens/MainScreen.kt` la pantalla lo hace **todo**:
 
@@ -56,30 +64,26 @@ MonsterCard(name, currentHp, maxHp, spriteId, onAttack)
 StatsPanel(bodyCount)
 ```
 
-## Paso 2 — MVVM (`develop-mvvm`)
+## La solución paso a paso (`main`)
 
 ```
         eventos (onAttack)
   View ───────────────────────▶ ViewModel ──▶ Repository
  (Compose) ◀─────────────────── (StateFlow)    (datos fake)
-        estado (MonsterUiState)
+        estado (MainScreenUiState)
 ```
 
-- **`MonsterUiState`**: `data class` inmutable con todo lo que la pantalla necesita para pintarse (`name`, `currentHp`, `maxHp`, `spriteId`, `bodyCount`).
-- **`MonsterViewModel`**: expone `val uiState: StateFlow<MonsterUiState>` (solo lectura). Por dentro usa un `MutableStateFlow` privado y modifica el estado con `_uiState.update { it.copy(...) }`. Toda la lógica de combate vive aquí.
-- **La vista** se limita a hacer `collectAsState()` y a llamar a `viewModel.onAttack()`.
+| Paso | Qué se hace |
+|---|---|
+| **0** | Añadir las dependencias de `lifecycle-viewmodel-compose` y `lifecycle-runtime-compose`. |
+| **1** | Crear `MainScreenUiState`: una `data class` con lo que necesita la pantalla para pintarse. |
+| **2** | Crear `MainScreenViewModel` con su `_uiState` privado (`MutableStateFlow`) y su `uiState` público (`StateFlow`), con el estado inicial sacado del repositorio. |
+| **3** | Sacar el estado de la vista: `MainScreen` recibe el `uiState` y el `ViewModel` se instancia en `MonsterFighterApp`. (La app deja de atacar temporalmente: es normal). |
+| **4** | Arreglo: al `UiState` le faltaba la vida actual del monstruo (`currentMonsterHP`). Pasa a menudo, se vuelve atrás y se corrige. |
+| **5** | Mover la lógica de ataque al `ViewModel` con `_uiState.update { it.copy(...) }`. |
+| **6** | `MainScreen` recibe `onAttack` como lambda y se conecta con `viewModel.onAttack()` desde `MonsterFighterApp`. |
 
 Resultado: el estado **sobrevive a la rotación** (el `ViewModel` no se destruye con la Activity), la lógica se puede testear sin UI y cada capa tiene una sola responsabilidad.
-
-## Paso 3 — Navegación (`develop-nav2`)
-
-Se añade una `InventoryScreen` y un botón para ir a ella desde la pantalla principal.
-
-- **`NavigationDestination`**: interfaz con `route` y `titleRes`. Cada pantalla declara su destino como un `object`, así no hay *magic strings* sueltos por el código.
-- **`MonsterClickerNavHost`**: define el grafo con `NavHost` y `composable(route = ...)`.
-- **Un `ViewModel` compartido**: se crea una sola vez en el NavHost y se pasa a las dos pantallas, así que ambas ven el mismo estado.
-- **Las pantallas no conocen el `NavController`**: reciben una lambda (`onNavigateToInventory`) y es el NavHost quien decide adónde ir.
-- **`Scaffold` y `TopAppBar`** se suben al Composable raíz de la app, que adapta el título y la flecha atrás según la pantalla.
 
 ---
 
@@ -87,14 +91,16 @@ Se añade una `InventoryScreen` y un botón para ir a ella desde la pantalla pri
 
 ```
 net.iessochoa.sergiocontreras.demomvvmt07_1
-├── MainActivity.kt          # Solo hace setContent { MonsterFighterApp() }
-├── MonsterFighterApp.kt     # Composable raíz: Scaffold (+ NavHost en nav2)
-├── model/Monster.kt         # Modelo de dominio
-├── data/MonsterRepository.kt# "BBDD" falsa: un object con una lista de monstruos
+├── MainActivity.kt           # Solo hace setContent { MonsterFighterApp() }
+├── MonsterFighterApp.kt      # Composable raíz: Scaffold + ViewModel
+├── model/Monster.kt          # Modelo de dominio
+├── data/MonsterRepository.kt # "BBDD" falsa: un object con una lista de monstruos
 └── ui/
-    ├── components/          # Componentes "tontos" reutilizables
-    ├── screens/             # Pantallas
-    └── theme/               # Tema Material 3
+    ├── MainScreenUiState.kt  # (main) Estado de la pantalla
+    ├── MainScreenViewModel.kt# (main) Lógica + StateFlow
+    ├── components/           # Componentes "tontos" reutilizables
+    ├── screens/              # Pantallas
+    └── theme/                # Tema Material 3
 ```
 
 ## Requisitos
@@ -109,5 +115,4 @@ Abre el proyecto, elige la rama y ejecuta. Si solo quieres ver los componentes, 
 
 - Añadir un tercer monstruo al repositorio (y su sprite en `res/drawable-nodpi`).
 - Mover el rango de daño (`1..3`) al `UiState` y mostrarlo en `StatsPanel` en lugar del texto fijo.
-- Escribir un test unitario de `MonsterViewModel.onAttack()`.
-- Añadir una tercera pantalla (por ejemplo, un bestiario) al grafo de navegación.
+- Escribir un test unitario de `MainScreenViewModel.onAttack()`.
